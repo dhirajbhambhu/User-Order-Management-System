@@ -1,7 +1,12 @@
 package com.dheeraj.usermanagement.model;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+@Entity
 public class User {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private int age;
@@ -16,7 +21,7 @@ public class User {
         this.age = age;
         this.city = city;
     }
-
+    
     public int getId() {
         return id;
     }
