@@ -1,7 +1,7 @@
 # Spring Boot User Management API
 
 A beginner-friendly REST API built using Spring Boot following clean architecture principles.  
-This project performs CRUD (Create, Read, Update, Delete) operations for managing users.
+This project performs CRUD (Create, Read, Update, Delete) operations for managing users and integrates MySQL database using Spring Data JPA and Hibernate.
 
 ---
 
@@ -16,6 +16,10 @@ This project performs CRUD (Create, Read, Update, Delete) operations for managin
 - RESTful API Design
 - Constructor Injection
 - Clean Package Structure
+- MySQL Database Integration
+- Spring Data JPA
+- Hibernate ORM
+- Automatic Table Creation
 
 ---
 
@@ -25,6 +29,9 @@ This project performs CRUD (Create, Read, Update, Delete) operations for managin
 - Spring Boot
 - Maven
 - REST API
+- MySQL
+- Spring Data JPA
+- Hibernate
 - Postman
 - IntelliJ IDEA
 
@@ -65,4 +72,4 @@ src/main/java/com/dheeraj/usermanagement
   "name": "Dheeraj",
   "age": 22,
   "city": "Jaipur"
-}ss
+}
