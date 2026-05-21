@@ -1,51 +1,64 @@
 package com.dheeraj.usermanagement.service;
 
 import com.dheeraj.usermanagement.model.User;
+import com.dheeraj.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
-    List<User> users = new ArrayList<>();
-    int nextId = 1;
 
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // CREATE USER
     public User addUser(User user) {
-        if(user.getName()==null||user.getName().isEmpty()){
-            return null;
-        }
-        if(user.getAge()<0){
-            return null;
-        }
-        user.setId(nextId);
-        nextId++;
-        users.add(user);
-        return user;
+        return userRepository.save(user);
     }
 
+    // GET ALL USERS
     public List<User> getUsers() {
-        return users;
+        return userRepository.findAll();
     }
 
-    public User updateUser(int id, User updateUser) {
-        for (User user : users) {
-            if (user.getId() == id) {
-                user.setName(updateUser.getName());
-                user.setAge(updateUser.getAge());
-                user.setCity(updateUser.getCity());
-                return user;
-            }
+    // UPDATE USER
+    public String updateUser(int id, User updateUser) {
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+
+            User existingUser = optionalUser.get();
+
+            existingUser.setName(updateUser.getName());
+            existingUser.setAge(updateUser.getAge());
+            existingUser.setCity(updateUser.getCity());
+
+            userRepository.save(existingUser);
+
+            return "User updated successfully";
         }
-        return null;
+
+        return "User not found";
     }
 
+    // DELETE USER
     public String deleteUser(int id) {
-        boolean removed = users.removeIf(user -> user.getId() == id);
-        if (removed) {
+
+        if (userRepository.existsById(id)) {
+
+            userRepository.deleteById(id);
+
             return "User deleted successfully";
         }
+
         return "User not found";
     }
 }
-
 
 

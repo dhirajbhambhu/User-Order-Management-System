@@ -39,29 +39,37 @@ public class UserController {
     }
 
     // UPDATE USER
+    // UPDATE USER
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id,
-                             @RequestBody User updateduser) {
+    public ResponseEntity<String> updateUser(@PathVariable int id,
+                                             @RequestBody User updatedUser) {
 
-        User user = userService.updateUser(id, updateduser);
-        if(user == null) {
+        String response = userService.updateUser(id, updatedUser);
+
+        if (response.equals("User not found")) {
+
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+                    .body(response);
         }
-        return ResponseEntity.ok(user);
+
+        return ResponseEntity.ok(response);
     }
 
     // DELETE USER
+    // DELETE USER
     @DeleteMapping("/users/{id}")
-    public ResponseEntity <String> deleteUser(@PathVariable int id) {
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
 
-        String response =  userService.deleteUser(id);
-        if(response.equals("User deleted successfully")){
-            return ResponseEntity.ok(response);
+        String response = userService.deleteUser(id);
+
+        if (response.equals("User not found")) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(response);
         }
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
+
+        return ResponseEntity.ok(response);
     }
 }
