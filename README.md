@@ -20,6 +20,8 @@ This project performs CRUD (Create, Read, Update, Delete) operations for managin
 - Spring Data JPA
 - Hibernate ORM
 - Automatic Table Creation
+- Repository Layer Integration
+- Persistent Database Storage
 
 ---
 
@@ -34,6 +36,7 @@ This project performs CRUD (Create, Read, Update, Delete) operations for managin
 - Hibernate
 - Postman
 - IntelliJ IDEA
+- Git & GitHub
 
 ---
 
@@ -46,6 +49,9 @@ src/main/java/com/dheeraj/usermanagement
 
 ├── service  
 │   └── UserService.java
+
+├── repository  
+│   └── UserRepository.java
 
 ├── model  
 │   └── User.java
@@ -60,7 +66,7 @@ src/main/java/com/dheeraj/usermanagement
 |--------|----------|-------------|
 | POST | /users | Create a new user |
 | GET | /users | Get all users |
-| PUT | /users/{id} | Update user |
+| PUT | /users/{id} | Update existing user |
 | DELETE | /users/{id} | Delete user |
 
 ---
