@@ -1,10 +1,11 @@
 package com.dheeraj.usermanagement.controller;
-
+import com.dheeraj.usermanagement.dto.UserRequestDto;
 import com.dheeraj.usermanagement.model.User;
 import com.dheeraj.usermanagement.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -19,19 +20,17 @@ public class UserController {
     }
 
     // CREATE USER
-    @PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
 
-        User createdUser= userService.addUser(user);
-        if(createdUser == null){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(null);
-        }
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(createdUser);
-    }
+      @PostMapping("/users")
+      public ResponseEntity<User> addUser(
+              @Valid @RequestBody UserRequestDto userRequestDto) {
+
+          User savedUser = userService.addUser(userRequestDto);
+
+          return ResponseEntity
+                  .status(HttpStatus.CREATED)
+                  .body(savedUser);
+      }
 
     // GET ALL USERS
     @GetMapping("/users")
@@ -43,7 +42,7 @@ public class UserController {
     // UPDATE USER
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable int id,
-                                             @RequestBody User updatedUser) {
+                                            @Valid @RequestBody UserRequestDto updatedUser) {
 
         String response = userService.updateUser(id, updatedUser);
 

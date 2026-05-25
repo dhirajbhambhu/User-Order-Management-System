@@ -1,38 +1,26 @@
-package com.dheeraj.usermanagement.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.dheeraj.usermanagement.dto;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
+public class UserRequestDto {
+
     @NotBlank(message = "Name cannot be empty")
     private String name;
-    @Min(value = 1,message = "age should be greater than 0")
+
+    @Min(value = 1, message = "Age must be greater than 0")
     private int age;
+
     @NotBlank(message = "City cannot be empty")
     private String city;
 
-    public User() {
+    public UserRequestDto() {
     }
 
-    public User(int id, String name, int age, String city) {
-        this.id = id;
+    public UserRequestDto(String name, int age, String city) {
         this.name = name;
         this.age = age;
         this.city = city;
-    }
-    
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -59,4 +47,3 @@ public class User {
         this.city = city;
     }
 }
-

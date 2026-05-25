@@ -1,5 +1,5 @@
 package com.dheeraj.usermanagement.service;
-
+import com.dheeraj.usermanagement.dto.UserRequestDto;
 import com.dheeraj.usermanagement.model.User;
 import com.dheeraj.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,14 @@ public class UserService {
     }
 
     // CREATE USER
-    public User addUser(User user) {
+    public User addUser(UserRequestDto userRequestDto) {
+
+        User user = new User();
+
+        user.setName(userRequestDto.getName());
+        user.setAge(userRequestDto.getAge());
+        user.setCity(userRequestDto.getCity());
+
         return userRepository.save(user);
     }
 
@@ -27,7 +34,7 @@ public class UserService {
     }
 
     // UPDATE USER
-    public String updateUser(int id, User updateUser) {
+    public String updateUser(int id, UserRequestDto updateUser) {
 
         Optional<User> optionalUser = userRepository.findById(id);
 
