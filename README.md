@@ -1,7 +1,14 @@
 # Spring Boot User Management API
 
 A beginner-friendly REST API built using Spring Boot following clean architecture principles.  
-This project performs CRUD (Create, Read, Update, Delete) operations for managing users and integrates MySQL database using Spring Data JPA and Hibernate.
+This project performs CRUD (Create, Read, Update, Delete) operations for managing users with MySQL database integration using Spring Data JPA and Hibernate.
+
+The project also includes:
+- Validation
+- Global Exception Handling
+- DTO Layer
+- Structured Error Responses
+- Layered Architecture
 
 ---
 
@@ -11,17 +18,17 @@ This project performs CRUD (Create, Read, Update, Delete) operations for managin
 - Get All Users
 - Update Existing User
 - Delete User
-- Proper HTTP Status Codes
-- Layered Architecture
-- RESTful API Design
-- Constructor Injection
-- Clean Package Structure
 - MySQL Database Integration
 - Spring Data JPA
 - Hibernate ORM
+- DTO Layer
+- Validation using `@Valid`
+- Global Exception Handling
+- Structured Validation Errors
+- RESTful API Design
+- Layered Architecture
+- Constructor Injection
 - Automatic Table Creation
-- Repository Layer Integration
-- Persistent Database Storage
 
 ---
 
@@ -36,7 +43,6 @@ This project performs CRUD (Create, Read, Update, Delete) operations for managin
 - Hibernate
 - Postman
 - IntelliJ IDEA
-- Git & GitHub
 
 ---
 
@@ -56,6 +62,12 @@ src/main/java/com/dheeraj/usermanagement
 ├── model  
 │   └── User.java
 
+├── dto  
+│   └── UserRequestDto.java
+
+├── exception  
+│   └── GlobalExceptionHandler.java
+
 └── StartApplication.java
 
 ---
@@ -66,7 +78,7 @@ src/main/java/com/dheeraj/usermanagement
 |--------|----------|-------------|
 | POST | /users | Create a new user |
 | GET | /users | Get all users |
-| PUT | /users/{id} | Update existing user |
+| PUT | /users/{id} | Update user |
 | DELETE | /users/{id} | Delete user |
 
 ---
