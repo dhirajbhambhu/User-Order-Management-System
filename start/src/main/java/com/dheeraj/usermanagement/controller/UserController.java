@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-
+@Tag(name = "User management API",
+description = "APIs for managing user")
 @RestController
 public class UserController {
 
@@ -20,7 +22,7 @@ public class UserController {
     }
 
     // CREATE USER
-
+    @Operation(summary = "create a new user")
       @PostMapping("/users")
       public ResponseEntity<User> addUser(
               @Valid @RequestBody UserRequestDto userRequestDto) {
@@ -33,13 +35,15 @@ public class UserController {
       }
 
     // GET ALL USERS
+    @Operation(summary = "Get all User")
     @GetMapping("/users")
     public ResponseEntity<List<User>>getUser(){
         return ResponseEntity.ok(userService.getUsers());
     }
 
+
     // UPDATE USER
-    // UPDATE USER
+    @Operation(summary = "Update existing User")
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable int id,
                                             @Valid @RequestBody UserRequestDto updatedUser) {
@@ -57,7 +61,7 @@ public class UserController {
     }
 
     // DELETE USER
-    // DELETE USER
+    @Operation(summary = "Delete the user by ID")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
 
