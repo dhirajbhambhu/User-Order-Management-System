@@ -1,18 +1,12 @@
-# Spring Boot User Management API
+# User Management System API
 
-A beginner-friendly REST API built using Spring Boot following clean architecture principles.  
-This project performs CRUD (Create, Read, Update, Delete) operations for managing users with MySQL database integration using Spring Data JPA and Hibernate.
+A professional beginner-level Spring Boot REST API project built using layered architecture and clean backend development practices.
 
-The project also includes:
-- Validation
-- Global Exception Handling
-- DTO Layer
-- Structured Error Responses
-- Layered Architecture
+This project performs CRUD (Create, Read, Update, Delete) operations for managing users with proper validation, exception handling, database integration, and Swagger API documentation.
 
 ---
 
-## Features
+# Features
 
 - Create User
 - Get All Users
@@ -20,75 +14,199 @@ The project also includes:
 - Delete User
 - MySQL Database Integration
 - Spring Data JPA
-- Hibernate ORM
-- DTO Layer
-- Validation using `@Valid`
+- DTO Layer Architecture
+- Request Validation
 - Global Exception Handling
-- Structured Validation Errors
+- Structured Validation Error Responses
+- Swagger/OpenAPI Documentation
 - RESTful API Design
 - Layered Architecture
 - Constructor Injection
-- Automatic Table Creation
+- Professional API Documentation
 
 ---
 
-## Tech Stack
+# Tech Stack
 
 - Java
 - Spring Boot
-- Maven
-- REST API
-- MySQL
 - Spring Data JPA
-- Hibernate
-- Postman
+- MySQL
+- Maven
+- Swagger / OpenAPI
+- REST API
 - IntelliJ IDEA
+- Postman
 
 ---
 
-## Project Structure
+# Project Architecture
+
+Controller Layer
+↓
+DTO Layer
+↓
+Validation Layer
+↓
+Service Layer
+↓
+Repository Layer
+↓
+MySQL Database
+
+---
+
+# Project Structure
 
 src/main/java/com/dheeraj/usermanagement
 
-├── controller  
+├── config
+│   └── SwaggerConfig.java
+│
+├── controller
 │   └── UserController.java
-
-├── service  
-│   └── UserService.java
-
-├── repository  
-│   └── UserRepository.java
-
-├── model  
-│   └── User.java
-
-├── dto  
+│
+├── dto
 │   └── UserRequestDto.java
-
-├── exception  
+│
+├── exception
 │   └── GlobalExceptionHandler.java
-
+│
+├── model
+│   └── User.java
+│
+├── repository
+│   └── UserRepository.java
+│
+├── service
+│   └── UserService.java
+│
 └── StartApplication.java
 
 ---
 
-## API Endpoints
+# API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | /users | Create a new user |
 | GET | /users | Get all users |
-| PUT | /users/{id} | Update user |
+| PUT | /users/{id} | Update existing user |
 | DELETE | /users/{id} | Delete user |
 
 ---
 
-## Sample POST Request
+# Validation Rules
+
+- Name cannot be empty
+- City cannot be empty
+- Age must be greater than 0
+
+---
+
+# Example Request
+
+## POST /users
 
 ```json
 {
-  "Id" : 1,
   "name": "Dheeraj",
   "age": 22,
   "city": "Jaipur"
 }
+```
+
+---
+
+# Example Validation Error Response
+
+```json
+{
+  "name": "Name cannot be empty",
+  "age": "Age must be greater than 0",
+  "city": "City cannot be empty"
+}
+```
+
+---
+
+# Swagger Documentation
+
+After running the application, open:
+
+http://localhost:8080/swagger-ui/index.html
+
+Swagger provides:
+- Interactive API Testing
+- API Documentation
+- Request/Response Examples
+- Validation Details
+
+---
+
+# Database Configuration
+
+Update your MySQL credentials inside:
+
+src/main/resources/application.properties
+
+Example:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/usermanagement
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
+
+---
+
+# How to Run Project
+
+1. Clone Repository
+
+```bash
+git clone https://github.com/dhiraj181818/springboot-user-management.git
+```
+
+2. Open Project in IntelliJ IDEA
+
+3. Configure MySQL Database
+
+4. Run StartApplication.java
+
+5. Open Swagger UI
+
+---
+
+# Concepts Implemented
+
+- REST APIs
+- CRUD Operations
+- DTO Architecture
+- Validation
+- Exception Handling
+- MySQL Integration
+- JPA Repository
+- Swagger/OpenAPI
+- Layered Architecture
+- HTTP Status Codes
+
+---
+
+# Future Improvements
+
+- JWT Authentication
+- Role-Based Authorization
+- Pagination
+- Logging
+- Unit Testing
+- Docker Deployment
+- Response DTOs
+- Lombok Integration
+
+---
+
+# Author
+
+Dheeraj Bhambhu
