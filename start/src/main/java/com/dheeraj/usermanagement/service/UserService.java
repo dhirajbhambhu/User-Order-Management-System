@@ -3,10 +3,11 @@ import com.dheeraj.usermanagement.dto.UserRequestDto;
 import com.dheeraj.usermanagement.model.User;
 import com.dheeraj.usermanagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
+import com.dheeraj.usermanagement.exception.UserNotFoundException;
 import java.util.List;
 import java.util.Optional;
-
+import com.dheeraj.usermanagement.dto.UserResponseDto;
+import java.util.stream.Collectors;
 @Service
 public class UserService {
 
@@ -17,7 +18,7 @@ public class UserService {
     }
 
     // CREATE USER
-    public User addUser(UserRequestDto userRequestDto) {
+    public UserResponseDto addUser(UserRequestDto userRequestDto) {
 
         User user = new User();
 
@@ -25,17 +26,22 @@ public class UserService {
         user.setAge(userRequestDto.getAge());
         user.setCity(userRequestDto.getCity());
 
-        return userRepository.save(user);
+        User savedUser =  userRepository.save(user);
+        return mapToResponseDto(savedUser);
     }
 
     // GET ALL USERS
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDto> getUsers() {
+
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
     // UPDATE USER
     public String updateUser(int id, UserRequestDto updateUser) {
-
         Optional<User> optionalUser = userRepository.findById(id);
 
         if (optionalUser.isPresent()) {
@@ -51,8 +57,9 @@ public class UserService {
             return "User updated successfully";
         }
 
-        return "User not found";
+        throw new UserNotFoundException("User not found");
     }
+    
 
     // DELETE USER
     public String deleteUser(int id) {
@@ -63,8 +70,16 @@ public class UserService {
 
             return "User deleted successfully";
         }
+        throw new UserNotFoundException("User not found");
+    }
+    private UserResponseDto mapToResponseDto(User user) {
 
-        return "User not found";
+        return new UserResponseDto(
+                user.getId(),
+                user.getName(),
+                user.getAge(),
+                user.getCity()
+        );
     }
 }
 

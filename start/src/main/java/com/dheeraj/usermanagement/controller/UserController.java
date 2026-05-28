@@ -5,13 +5,18 @@ import com.dheeraj.usermanagement.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.dheeraj.usermanagement.response.ApiResponse;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import com.dheeraj.usermanagement.dto.UserResponseDto;
 @Tag(name = "User management API",
 description = "APIs for managing user")
 @RestController
+
+
+
 public class UserController {
 
     private final UserService userService;
@@ -23,56 +28,91 @@ public class UserController {
 
     // CREATE USER
     @Operation(summary = "create a new user")
-      @PostMapping("/users")
-      public ResponseEntity<User> addUser(
-              @Valid @RequestBody UserRequestDto userRequestDto) {
+     @PostMapping("/users")
+      public ResponseEntity<ApiResponse<UserResponseDto>> addUser(
+            @Valid @RequestBody UserRequestDto userRequestDto) {
 
-          User savedUser = userService.addUser(userRequestDto);
+          UserResponseDto savedUser = userService.addUser(userRequestDto);
+          ApiResponse<UserResponseDto> response = new ApiResponse<>(
+                 true,
+                 "User Created Successfully" ,
+                         savedUser
+          );
 
           return ResponseEntity
                   .status(HttpStatus.CREATED)
-                  .body(savedUser);
+                  .body(response);
       }
+
 
     // GET ALL USERS
     @Operation(summary = "Get all User")
     @GetMapping("/users")
-    public ResponseEntity<List<User>>getUser(){
-        return ResponseEntity.ok(userService.getUsers());
+    public ResponseEntity<ApiResponse<List<UserResponseDto>>>getUser(){
+
+       List<UserResponseDto>users= userService.getUsers();
+        ApiResponse<List<UserResponseDto>> response = new ApiResponse<>(
+                true,
+                "Users fetched successfully",
+                users
+        );
+        return ResponseEntity.ok(response);
     }
 
 
     // UPDATE USER
     @Operation(summary = "Update existing User")
     @PutMapping("/users/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable int id,
+    public ResponseEntity<ApiResponse<String>> updateUser(@PathVariable int id,
                                             @Valid @RequestBody UserRequestDto updatedUser) {
 
-        String response = userService.updateUser(id, updatedUser);
+        String result = userService.updateUser(id, updatedUser);
 
-        if (response.equals("User not found")) {
+        if (result.equals("User not found")) {
+            ApiResponse<String> response = new ApiResponse<>(
+                    false,
+                    result,
+                    null
+            );
 
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(response);
         }
+        ApiResponse<String> response = new ApiResponse<>(
+                true,
+                result,
+                null
+        );
 
         return ResponseEntity.ok(response);
     }
 
-    // DELETE USER
-    @Operation(summary = "Delete the user by ID")
+    @Operation(summary = "Delete user by ID")
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteUser(
+            @PathVariable int id) {
 
-        String response = userService.deleteUser(id);
+        String result = userService.deleteUser(id);
 
-        if (response.equals("User not found")) {
+        if(result.equals("User not found")) {
+
+            ApiResponse<String> response = new ApiResponse<>(
+                    false,
+                    result,
+                    null
+            );
 
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(response);
         }
+
+        ApiResponse<String> response = new ApiResponse<>(
+                true,
+                result,
+                null
+        );
 
         return ResponseEntity.ok(response);
     }
