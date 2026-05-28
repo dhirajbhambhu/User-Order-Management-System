@@ -1,52 +1,61 @@
-# User Management System API
+# Spring Boot User Management API
 
-A professional beginner-level Spring Boot REST API project built using layered architecture and clean backend development practices.
+A structured backend project built using Spring Boot following layered architecture and REST API best practices.
 
-This project performs CRUD (Create, Read, Update, Delete) operations for managing users with proper validation, exception handling, database integration, and Swagger API documentation.
+This project performs CRUD (Create, Read, Update, Delete) operations with:
+
+* MySQL database integration
+* DTO architecture
+* Validation
+* Global exception handling
+* Swagger documentation
+* Standardized API responses
 
 ---
 
 # Features
 
-- Create User
-- Get All Users
-- Update Existing User
-- Delete User
-- MySQL Database Integration
-- Spring Data JPA
-- DTO Layer Architecture
-- Request Validation
-- Global Exception Handling
-- Structured Validation Error Responses
-- Swagger/OpenAPI Documentation
-- RESTful API Design
-- Layered Architecture
-- Constructor Injection
-- Professional API Documentation
+* Create User
+* Get All Users
+* Update Existing User
+* Delete User
+* MySQL Database Integration
+* JPA & Hibernate
+* DTO Layer
+* Request Validation
+* Global Exception Handling
+* Custom Exception Handling
+* Swagger/OpenAPI Documentation
+* Standardized API Responses
+* Lombok Integration
+* Stream API Mapping
+* Clean Layered Architecture
 
 ---
 
 # Tech Stack
 
-- Java
-- Spring Boot
-- Spring Data JPA
-- MySQL
-- Maven
-- Swagger / OpenAPI
-- REST API
-- IntelliJ IDEA
-- Postman
+* Java
+* Spring Boot
+* Spring Data JPA
+* Hibernate
+* MySQL
+* Maven
+* Lombok
+* Swagger / OpenAPI
+* REST API
+* IntelliJ IDEA
+* Postman
 
 ---
 
 # Project Architecture
 
-Controller Layer
+Controller
 ↓
 DTO Layer
 ↓
-Validation Layer
+Validation
 ↓
 Service Layer
 ↓
@@ -60,71 +69,82 @@ MySQL Database
 
 src/main/java/com/dheeraj/usermanagement
 
-├── config
-│   └── SwaggerConfig.java
-│
 ├── controller
 │   └── UserController.java
-│
-├── dto
-│   └── UserRequestDto.java
-│
-├── exception
-│   └── GlobalExceptionHandler.java
-│
-├── model
-│   └── User.java
-│
-├── repository
-│   └── UserRepository.java
-│
+
 ├── service
 │   └── UserService.java
-│
+
+├── repository
+│   └── UserRepository.java
+
+├── dto
+│   ├── UserRequestDto.java
+│   └── UserResponseDto.java
+
+├── exception
+│   ├── GlobalExceptionHandler.java
+│   └── UserNotFoundException.java
+
+├── response
+│   └── ApiResponse.java
+
+├── config
+│   └── SwaggerConfig.java
+
+├── model
+│   └── User.java
+
 └── StartApplication.java
 
 ---
 
 # API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /users | Create a new user |
-| GET | /users | Get all users |
-| PUT | /users/{id} | Update existing user |
-| DELETE | /users/{id} | Delete user |
+| Method | Endpoint    | Description     |
+| ------ | ----------- | --------------- |
+| POST   | /users      | Create new user |
+| GET    | /users      | Get all users   |
+| PUT    | /users/{id} | Update user     |
+| DELETE | /users/{id} | Delete user     |
 
 ---
 
-# Validation Rules
+# Validation Features
 
-- Name cannot be empty
-- City cannot be empty
-- Age must be greater than 0
+* Name cannot be empty
+* City cannot be empty
+* Age must be greater than 0
 
 ---
 
-# Example Request
+# Standard API Response Format
 
-## POST /users
+## Success Response
 
 ```json
 {
-  "name": "Dheeraj",
-  "age": 22,
-  "city": "Jaipur"
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "id": 1,
+    "name": "Dheeraj",
+    "age": 22,
+    "city": "Jaipur"
+  }
 }
 ```
 
----
-
-# Example Validation Error Response
+## Validation Error Response
 
 ```json
 {
-  "name": "Name cannot be empty",
-  "age": "Age must be greater than 0",
-  "city": "City cannot be empty"
+  "success": false,
+  "message": "Validation failed",
+  "data": {
+    "name": "Name cannot be empty",
+    "age": "Age must be greater than 0"
+  }
 }
 ```
 
@@ -132,78 +152,52 @@ src/main/java/com/dheeraj/usermanagement
 
 # Swagger Documentation
 
-After running the application, open:
+Swagger UI available at:
 
 http://localhost:8080/swagger-ui/index.html
-
-Swagger provides:
-- Interactive API Testing
-- API Documentation
-- Request/Response Examples
-- Validation Details
 
 ---
 
 # Database Configuration
 
-Update your MySQL credentials inside:
-
-src/main/resources/application.properties
-
-Example:
+Update application.properties:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/usermanagement
-spring.datasource.username=root
+spring.datasource.username=your_username
 spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 ```
 
 ---
 
-# How to Run Project
+# Key Concepts Implemented
 
-1. Clone Repository
-
-```bash
-git clone https://github.com/dhiraj181818/springboot-user-management.git
-```
-
-2. Open Project in IntelliJ IDEA
-
-3. Configure MySQL Database
-
-4. Run StartApplication.java
-
-5. Open Swagger UI
-
----
-
-# Concepts Implemented
-
-- REST APIs
-- CRUD Operations
-- DTO Architecture
-- Validation
-- Exception Handling
-- MySQL Integration
-- JPA Repository
-- Swagger/OpenAPI
-- Layered Architecture
-- HTTP Status Codes
+* REST API Development
+* Layered Architecture
+* DTO Pattern
+* Entity Mapping
+* Request Validation
+* Exception Handling
+* API Documentation
+* Repository Pattern
+* Response Standardization
+* Java Streams
+* Lombok
+* JPA & Hibernate
 
 ---
 
 # Future Improvements
 
-- JWT Authentication
-- Role-Based Authorization
-- Pagination
-- Logging
-- Unit Testing
-- Docker Deployment
-- Response DTOs
-- Lombok Integration
+* JWT Authentication
+* Role-Based Authorization
+* Pagination
+* Search & Sorting
+* Unit Testing
+* Docker Deployment
+* Logging
+* CI/CD Integration
 
 ---
 
