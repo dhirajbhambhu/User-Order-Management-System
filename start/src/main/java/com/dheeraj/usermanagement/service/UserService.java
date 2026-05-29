@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import com.dheeraj.usermanagement.dto.UserResponseDto;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 @Service
 public class UserService {
 
@@ -34,6 +36,36 @@ public class UserService {
     public List<UserResponseDto> getUsers() {
 
         List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+    public UserResponseDto getUserById(int id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found"));
+        return mapToResponseDto(user);
+    }
+    public UserResponseDto getUserByName(String name) {
+
+        User user = userRepository.findByName(name)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found"));
+
+        return mapToResponseDto(user);
+    }
+    public List<UserResponseDto> getUsersByCity(String city) {
+
+        List<User> users = userRepository.findByCity(city);
+
+        return users.stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+    public List<UserResponseDto> getUsersOlderThan(int age) {
+
+        List<User> users = userRepository.findByAgeGreaterThan(age);
 
         return users.stream()
                 .map(this::mapToResponseDto)
@@ -80,6 +112,12 @@ public class UserService {
                 user.getAge(),
                 user.getCity()
         );
+    }
+    public Page<UserResponseDto> getUsers(Pageable pageable) {
+
+        Page<User> usersPage = userRepository.findAll(pageable);
+
+        return usersPage.map(this::mapToResponseDto);
     }
 }
 
