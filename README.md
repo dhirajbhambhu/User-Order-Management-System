@@ -1,35 +1,14 @@
 # User Management System API
 
-A RESTful User Management System built using Spring Boot, Spring Data JPA, and MySQL. This project demonstrates backend development concepts including CRUD operations, DTOs, validation, exception handling, pagination, sorting, and API documentation with Swagger.
+A Spring Boot REST API project built to learn and practice Java Backend Development, Spring Boot, Spring Data JPA, MySQL, REST APIs, and Clean Architecture concepts.
 
 ---
 
-## Features
-
-* Create User
-* Get All Users
-* Get User By ID
-* Get User By Name
-* Get Users By City
-* Get Users Older Than a Given Age
-* Update User
-* Delete User
-* Request Validation
-* Custom API Responses
-* Global Exception Handling
-* Custom Exceptions
-* DTO Pattern
-* Swagger/OpenAPI Documentation
-* Pagination
-* Sorting (Ascending and Descending)
-
----
-
-## Tech Stack
+## 🚀 Tech Stack
 
 * Java 21
 * Spring Boot
-* Spring Data JPA
+* Spring Data JPA (Hibernate)
 * MySQL
 * Maven
 * Lombok
@@ -37,25 +16,38 @@ A RESTful User Management System built using Spring Boot, Spring Data JPA, and M
 
 ---
 
-## Project Structure
+## 📌 Project Overview
+
+This project provides REST APIs for managing users and their orders.
+
+The application follows a layered architecture:
+
+```text
+Controller → Service → Repository → Database
+```
+
+The goal of this project is to gain hands-on experience with backend development concepts commonly used in real-world applications.
+
+---
+
+## 📂 Project Structure
 
 ```text
 src/main/java/com/dheeraj/usermanagement
 
 ├── controller
-├── dto
-├── exception
-├── model
-├── repository
-├── response
 ├── service
-├── config
-└── StartApplication.java
+├── repository
+├── model
+├── dto
+├── response
+├── exception
+└── config
 ```
 
 ---
 
-## API Endpoints
+## 👤 User Management Features
 
 ### Create User
 
@@ -63,17 +55,7 @@ src/main/java/com/dheeraj/usermanagement
 POST /users
 ```
 
-Request Body:
-
-```json
-{
-  "name": "Dheeraj",
-  "age": 22,
-  "city": "Jaipur"
-}
-```
-
----
+Creates a new user.
 
 ### Get All Users
 
@@ -81,7 +63,7 @@ Request Body:
 GET /users
 ```
 
----
+Returns all users.
 
 ### Get User By ID
 
@@ -89,55 +71,7 @@ GET /users
 GET /users/{id}
 ```
 
-Example:
-
-```http
-GET /users/1
-```
-
----
-
-### Get User By Name
-
-```http
-GET /users/name/{name}
-```
-
-Example:
-
-```http
-GET /users/name/Dheeraj
-```
-
----
-
-### Get Users By City
-
-```http
-GET /users/city/{city}
-```
-
-Example:
-
-```http
-GET /users/city/Jaipur
-```
-
----
-
-### Get Users Older Than Age
-
-```http
-GET /users/age/{age}
-```
-
-Example:
-
-```http
-GET /users/age/20
-```
-
----
+Returns a user by id.
 
 ### Update User
 
@@ -145,23 +79,7 @@ GET /users/age/20
 PUT /users/{id}
 ```
 
-Example:
-
-```http
-PUT /users/1
-```
-
-Request Body:
-
-```json
-{
-  "name": "Dheeraj",
-  "age": 23,
-  "city": "Delhi"
-}
-```
-
----
+Updates an existing user.
 
 ### Delete User
 
@@ -169,127 +87,264 @@ Request Body:
 DELETE /users/{id}
 ```
 
-Example:
+Deletes a user.
+
+### Search User By Name
 
 ```http
-DELETE /users/1
+GET /users/name/{name}
 ```
+
+Searches user by name.
+
+### Search User By Age
+
+```http
+GET /users/age/{age}
+```
+
+Searches users by age.
 
 ---
 
-## Pagination and Sorting
+## 📄 Pagination
 
-### Get Paginated Users
+Fetch users page by page.
 
 ```http
 GET /users/paginated?page=0&size=5
 ```
 
----
-
-### Pagination with Sorting
+Example:
 
 ```http
-GET /users/paginated?page=0&size=5&sortBy=id&direction=asc
+GET /users/paginated?page=1&size=10
 ```
 
-Example:
+---
+
+## 🔃 Sorting
+
+Sort users dynamically using any field.
+
+### Ascending Order
+
+```http
+GET /users/paginated?page=0&size=5&sortBy=name&direction=asc
+```
+
+### Descending Order
 
 ```http
 GET /users/paginated?page=0&size=5&sortBy=age&direction=desc
 ```
 
-Parameters:
+Supported fields:
 
-| Parameter | Description                      |
-| --------- | -------------------------------- |
-| page      | Page number (starts from 0)      |
-| size      | Number of records per page       |
-| sortBy    | Field name (id, name, age, city) |
-| direction | asc or desc                      |
-
----
-
-## Validation Rules
-
-### Name
-
-* Cannot be blank
-
-### Age
-
-* Must be greater than 0
-
-### City
-
-* Cannot be blank
+* id
+* name
+* age
+* city
+* createdAt
+* updatedAt
 
 ---
 
-## Exception Handling
+## ⏰ Audit Fields
 
-The project handles:
+Each user contains:
 
-* Validation Errors (400)
-* User Not Found Errors (404)
-* Global Exceptions
+```java
+private LocalDateTime createdAt;
+private LocalDateTime updatedAt;
+```
 
-Example Response:
+### Purpose
+
+* createdAt → Stores record creation time
+* updatedAt → Stores latest update time
+
+---
+
+## 🛒 Order Management
+
+### Create Order For User
+
+```http
+POST /users/{userId}/orders
+```
+
+Sample Request:
 
 ```json
 {
-  "success": false,
-  "message": "User not found",
-  "data": null
+  "productName": "Laptop",
+  "price": 50000
+}
+```
+
+Sample Response:
+
+```json
+{
+  "success": true,
+  "message": "Order Created Successfully",
+  "data": {
+    "id": 1,
+    "productName": "Laptop",
+    "price": 50000
+  }
 }
 ```
 
 ---
 
-## Swagger Documentation
+## 🔗 Entity Relationship
 
-After running the application:
+### User → Orders
+
+One User can have multiple Orders.
+
+```text
+User (1)
+   |
+   |------> Order 1
+   |------> Order 2
+   |------> Order 3
+```
+
+Implemented using JPA:
+
+```java
+@OneToMany
+@ManyToOne
+@JoinColumn
+```
+
+Database Relationship:
+
+```text
+users
+  |
+  | id
+  |
+orders
+  |
+  | user_id (Foreign Key)
+```
+
+---
+
+## ⚠️ Exception Handling
+
+Custom Exception:
+
+```java
+UserNotFoundException
+```
+
+Global Exception Handling:
+
+```java
+@RestControllerAdvice
+```
+
+Provides consistent error responses throughout the application.
+
+---
+
+## 📦 API Response Structure
+
+All APIs return a common response format:
+
+```json
+{
+  "success": true,
+  "message": "Operation Successful",
+  "data": {}
+}
+```
+
+---
+
+## 🗄 Database
+
+Database: MySQL
+
+Current Tables:
+
+### users
+
+| Column     |
+| ---------- |
+| id         |
+| name       |
+| age        |
+| city       |
+| created_at |
+| updated_at |
+
+### orders
+
+| Column       |
+| ------------ |
+| id           |
+| product_name |
+| price        |
+| user_id      |
+
+---
+
+## 📖 Swagger Documentation
+
+Swagger UI:
 
 ```text
 http://localhost:8080/swagger-ui/index.html
 ```
 
+Use Swagger to test APIs directly from the browser.
+
 ---
 
-## Concepts Implemented
+## 🎯 Concepts Learned
 
 * REST APIs
-* CRUD Operations
+* Spring Boot
+* Dependency Injection
 * Layered Architecture
 * DTO Pattern
-* Validation
-* Spring Data JPA
-* Repository Pattern
-* Global Exception Handling
-* Custom Exceptions
-* API Documentation
+* Entity Mapping
+* JPA/Hibernate
+* MySQL Integration
 * Pagination
 * Sorting
-* Stream API
-* Response Standardization
+* Exception Handling
+* One-to-Many Relationships
+* Many-to-One Relationships
+* Foreign Keys
+* Swagger Documentation
 
 ---
 
-## Future Improvements
+## 🚧 Upcoming Features
 
-* Service Interface + Implementation
-* Authentication & Authorization
-* JWT Security
-* Password Encryption
-* Role Based Access Control
-* Deployment
-* Unit Testing
-* Docker
+* Get All Orders Of A User
+* Update Order
+* Delete Order
+* Validation (@Valid)
+* Global Validation Handling
+* Advanced JPA Queries
+* PostgreSQL Support
+* Unit Testing (JUnit + Mockito)
+* Docker Deployment
 
 ---
 
-## Author
+## 👨‍💻 Author
 
 Dheeraj Bhambhu
 
-Backend Development Learning Project built with Spring Boot.
+Java Backend Development Journey
+
+Building backend systems with Spring Boot, JPA, MySQL, and Clean Architecture.
