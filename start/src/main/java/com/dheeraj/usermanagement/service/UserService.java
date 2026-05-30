@@ -10,6 +10,7 @@ import com.dheeraj.usermanagement.dto.UserResponseDto;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.time.LocalDateTime;
 @Service
 public class UserService {
 
@@ -27,6 +28,9 @@ public class UserService {
         user.setName(userRequestDto.getName());
         user.setAge(userRequestDto.getAge());
         user.setCity(userRequestDto.getCity());
+
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
 
         User savedUser =  userRepository.save(user);
         return mapToResponseDto(savedUser);
@@ -84,6 +88,8 @@ public class UserService {
             existingUser.setAge(updateUser.getAge());
             existingUser.setCity(updateUser.getCity());
 
+            existingUser.setUpdatedAt(LocalDateTime.now());
+
             userRepository.save(existingUser);
 
             return "User updated successfully";
@@ -110,7 +116,9 @@ public class UserService {
                 user.getId(),
                 user.getName(),
                 user.getAge(),
-                user.getCity()
+                user.getCity(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
     public Page<UserResponseDto> getUsers(Pageable pageable) {

@@ -4,10 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Data
@@ -24,5 +26,11 @@ public class User {
     private int age;
 
     private String city;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+    @OneToMany(mappedBy = "user")
+    private List<Orders> orders;
 }
 
