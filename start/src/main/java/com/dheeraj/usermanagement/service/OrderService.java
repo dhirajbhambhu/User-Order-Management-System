@@ -112,5 +112,36 @@ public class OrderService {
                 ))
                 .toList();
     }
+    public List<OrderResponseDto> getOrdersAbovePrice(double price) {
+
+        List<Orders> orders =
+                orderRepository.findOrdersAbovePrice(price);
+
+        return orders.stream()
+                .map(order -> new OrderResponseDto(
+                        order.getId(),
+                        order.getProductName(),
+                        order.getPrice()
+                ))
+                .toList();
+    }
+    public List<OrderResponseDto> getOrdersBetweenPrices(
+            double minPrice,
+            double maxPrice) {
+
+        List<Orders> orders =
+                orderRepository.findOrdersBetweenPrices(
+                        minPrice,
+                        maxPrice
+                );
+
+        return orders.stream()
+                .map(order -> new OrderResponseDto(
+                        order.getId(),
+                        order.getProductName(),
+                        order.getPrice()
+                ))
+                .toList();
+    }
 
 }

@@ -118,5 +118,41 @@ public class OrderController {
 
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/orders/above-price")
+    public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getOrdersAbovePrice(
+            @RequestParam double price) {
+
+        List<OrderResponseDto> orders =
+                orderService.getOrdersAbovePrice(price);
+
+        ApiResponse<List<OrderResponseDto>> response =
+                new ApiResponse<>(
+                        true,
+                        "Orders fetched successfully",
+                        orders
+                );
+
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/orders/between-prices")
+    public ResponseEntity<ApiResponse<List<OrderResponseDto>>> getOrdersBetweenPrices(
+            @RequestParam double minPrice,
+            @RequestParam double maxPrice) {
+
+        List<OrderResponseDto> orders =
+                orderService.getOrdersBetweenPrices(
+                        minPrice,
+                        maxPrice
+                );
+
+        ApiResponse<List<OrderResponseDto>> response =
+                new ApiResponse<>(
+                        true,
+                        "Orders fetched successfully",
+                        orders
+                );
+
+        return ResponseEntity.ok(response);
+    }
 
 }
