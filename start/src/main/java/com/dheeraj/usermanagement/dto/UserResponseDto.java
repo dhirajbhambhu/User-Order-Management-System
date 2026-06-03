@@ -17,7 +17,7 @@ public class UserResponseDto {
     private int age;
 
     private String city;
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String email;
 }

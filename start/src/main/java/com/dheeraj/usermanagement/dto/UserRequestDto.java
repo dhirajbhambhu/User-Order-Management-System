@@ -21,5 +21,8 @@ public class UserRequestDto {
             example = "Jaipur")
     @NotBlank(message = "City cannot be empty")
     private String city;
+    private String email;
+
+    private String password;
 }
 

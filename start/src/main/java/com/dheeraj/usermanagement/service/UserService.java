@@ -28,7 +28,8 @@ public class UserService {
         user.setName(userRequestDto.getName());
         user.setAge(userRequestDto.getAge());
         user.setCity(userRequestDto.getCity());
-
+        user.setEmail(userRequestDto.getEmail());
+        user.setPassword(userRequestDto.getPassword());
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -118,7 +119,8 @@ public class UserService {
                 user.getAge(),
                 user.getCity(),
                 user.getCreatedAt(),
-                user.getUpdatedAt()
+                user.getUpdatedAt() ,
+                user.getEmail()
         );
     }
     public Page<UserResponseDto> getUsers(Pageable pageable) {
