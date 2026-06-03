@@ -1,24 +1,25 @@
 # User Management System API
 
-A Spring Boot REST API project built to learn and practice Java Backend Development, Spring Boot, Spring Data JPA, MySQL, REST APIs, and Clean Architecture concepts.
+A Spring Boot REST API project built to learn and practice Java Backend Development, Spring Boot, Spring Data JPA, Spring Security, MySQL, REST APIs, and Clean Architecture concepts.
 
 ---
 
 ## 🚀 Tech Stack
 
-* Java 21
-* Spring Boot
-* Spring Data JPA (Hibernate)
-* MySQL
-* Maven
-* Lombok
-* Swagger / OpenAPI
+- Java 21
+- Spring Boot
+- Spring Data JPA (Hibernate)
+- Spring Security
+- MySQL
+- Maven
+- Lombok
+- Swagger / OpenAPI
 
 ---
 
 ## 📌 Project Overview
 
-This project provides REST APIs for managing users and their orders.
+This project provides REST APIs for managing users, orders, and authentication.
 
 The application follows a layered architecture:
 
@@ -42,72 +43,59 @@ src/main/java/com/dheeraj/usermanagement
 ├── dto
 ├── response
 ├── exception
-└── config
+├── config
+└── security
 ```
 
 ---
 
-## 👤 User Management Features
+# 👤 User Management APIs
 
-### Create User
+## Create User
 
 ```http
 POST /users
 ```
 
-Creates a new user.
-
-### Get All Users
+## Get All Users
 
 ```http
 GET /users
 ```
 
-Returns all users.
-
-### Get User By ID
+## Get User By ID
 
 ```http
 GET /users/{id}
 ```
 
-Returns a user by id.
-
-### Update User
+## Update User
 
 ```http
 PUT /users/{id}
 ```
 
-Updates an existing user.
-
-### Delete User
+## Delete User
 
 ```http
 DELETE /users/{id}
 ```
 
-Deletes a user.
-
-### Search User By Name
+## Search User By Name
 
 ```http
 GET /users/name/{name}
 ```
 
-Searches user by name.
-
-### Search User By Age
+## Search User By Age
 
 ```http
 GET /users/age/{age}
 ```
 
-Searches users by age.
-
 ---
 
-## 📄 Pagination
+# 📄 Pagination
 
 Fetch users page by page.
 
@@ -123,52 +111,27 @@ GET /users/paginated?page=1&size=10
 
 ---
 
-## 🔃 Sorting
+# 🔃 Sorting
 
-Sort users dynamically using any field.
+Sort users dynamically.
 
-### Ascending Order
+Ascending:
 
 ```http
 GET /users/paginated?page=0&size=5&sortBy=name&direction=asc
 ```
 
-### Descending Order
+Descending:
 
 ```http
 GET /users/paginated?page=0&size=5&sortBy=age&direction=desc
 ```
 
-Supported fields:
-
-* id
-* name
-* age
-* city
-* createdAt
-* updatedAt
-
 ---
 
-## ⏰ Audit Fields
+# 🛒 Order Management APIs
 
-Each user contains:
-
-```java
-private LocalDateTime createdAt;
-private LocalDateTime updatedAt;
-```
-
-### Purpose
-
-* createdAt → Stores record creation time
-* updatedAt → Stores latest update time
-
----
-
-## 🛒 Order Management
-
-### Create Order For User
+## Create Order
 
 ```http
 POST /users/{userId}/orders
@@ -183,37 +146,154 @@ Sample Request:
 }
 ```
 
+---
+
+## Get All Orders Of User
+
+```http
+GET /users/{userId}/orders
+```
+
+---
+
+## Get Order By ID
+
+```http
+GET /orders/{orderId}
+```
+
+---
+
+## Update Order
+
+```http
+PUT /orders/{orderId}
+```
+
+---
+
+## Delete Order
+
+```http
+DELETE /orders/{orderId}
+```
+
+---
+
+## Search Orders By Product Name
+
+```http
+GET /orders/search?productName=laptop
+```
+
+Supports partial matching and ignores upper/lower case.
+
+Examples:
+
+```text
+lap
+Laptop
+LAPTOP
+```
+
+---
+
+# 🔍 Custom JPA Query
+
+## Orders Above Price
+
+```http
+GET /orders/above-price/{price}
+```
+
+Example:
+
+```http
+GET /orders/above-price/50000
+```
+
+Returns all orders having price greater than the given value.
+
+---
+
+# 🔐 Authentication APIs
+
+## Register User
+
+```http
+POST /auth/register
+```
+
+Sample Request:
+
+```json
+{
+  "name": "Virat",
+  "age": 35,
+  "city": "Delhi",
+  "email": "virat@gmail.com",
+  "password": "password123"
+}
+```
+
+---
+
+## Login User
+
+```http
+POST /auth/login
+```
+
+Sample Request:
+
+```json
+{
+  "email": "virat@gmail.com",
+  "password": "password123"
+}
+```
+
 Sample Response:
 
 ```json
 {
   "success": true,
-  "message": "Order Created Successfully",
+  "message": "Login Successful",
   "data": {
     "id": 1,
-    "productName": "Laptop",
-    "price": 50000
+    "name": "Virat",
+    "email": "virat@gmail.com"
   }
 }
 ```
 
 ---
 
-## 🔗 Entity Relationship
+# 🔒 Password Security
 
-### User → Orders
+Passwords are encrypted using BCrypt before storing in the database.
 
-One User can have multiple Orders.
+Example:
+
+```text
+$2a$10$tkNSQFc6eHFd/Lu/0A6vmOMqNdObubuoafaTYdPDP2XBI3JnYQlJq
+```
+
+Passwords are never stored in plain text.
+
+---
+
+# 🔗 Entity Relationship
 
 ```text
 User (1)
-   |
-   |------> Order 1
-   |------> Order 2
-   |------> Order 3
+    |
+    |------> Order 1
+    |------> Order 2
+    |------> Order 3
 ```
 
-Implemented using JPA:
+JPA Mapping:
 
 ```java
 @OneToMany
@@ -230,20 +310,20 @@ users
   |
 orders
   |
-  | user_id (Foreign Key)
+  | user_id
 ```
 
 ---
 
-## ⚠️ Exception Handling
+# ⚠️ Exception Handling
 
-Custom Exception:
+Custom Exceptions:
 
 ```java
 UserNotFoundException
 ```
 
-Global Exception Handling:
+Global Handler:
 
 ```java
 @RestControllerAdvice
@@ -253,9 +333,7 @@ Provides consistent error responses throughout the application.
 
 ---
 
-## 📦 API Response Structure
-
-All APIs return a common response format:
+# 📦 API Response Structure
 
 ```json
 {
@@ -267,37 +345,33 @@ All APIs return a common response format:
 
 ---
 
-## 🗄 Database
+# 🗄 Database
 
-Database: MySQL
+## users
 
-Current Tables:
-
-### users
-
-| Column     |
-| ---------- |
-| id         |
-| name       |
-| age        |
-| city       |
+| Column |
+|----------|
+| id |
+| name |
+| age |
+| city |
+| email |
+| password |
 | created_at |
 | updated_at |
 
-### orders
+## orders
 
-| Column       |
-| ------------ |
-| id           |
+| Column |
+|----------|
+| id |
 | product_name |
-| price        |
-| user_id      |
+| price |
+| user_id |
 
 ---
 
-## 📖 Swagger Documentation
-
-Swagger UI:
+# 📖 Swagger Documentation
 
 ```text
 http://localhost:8080/swagger-ui/index.html
@@ -307,44 +381,72 @@ Use Swagger to test APIs directly from the browser.
 
 ---
 
-## 🎯 Concepts Learned
+# 💻 Run Project
 
-* REST APIs
-* Spring Boot
-* Dependency Injection
-* Layered Architecture
-* DTO Pattern
-* Entity Mapping
-* JPA/Hibernate
-* MySQL Integration
-* Pagination
-* Sorting
-* Exception Handling
-* One-to-Many Relationships
-* Many-to-One Relationships
-* Foreign Keys
-* Swagger Documentation
+Clone Repository:
 
----
+```bash
+git clone https://github.com/dheeraj-bhambhu/springboot-user-management.git
+```
 
-## 🚧 Upcoming Features
+Move Into Project:
 
-* Get All Orders Of A User
-* Update Order
-* Delete Order
-* Validation (@Valid)
-* Global Validation Handling
-* Advanced JPA Queries
-* PostgreSQL Support
-* Unit Testing (JUnit + Mockito)
-* Docker Deployment
+```bash
+cd springboot-user-management
+```
+
+Run Application:
+
+```bash
+mvn spring-boot:run
+```
+
+Or:
+
+```bash
+./mvnw spring-boot:run
+```
 
 ---
 
-## 👨‍💻 Author
+# 🎯 Concepts Learned
+
+- REST APIs
+- Spring Boot
+- Dependency Injection
+- Layered Architecture
+- DTO Pattern
+- Entity Mapping
+- JPA/Hibernate
+- MySQL Integration
+- Pagination
+- Sorting
+- One-To-Many Mapping
+- Many-To-One Mapping
+- Foreign Keys
+- Custom Queries (@Query)
+- Spring Security
+- Authentication
+- BCrypt Password Encryption
+- Password Hashing
+- Swagger Documentation
+
+---
+
+# 🚧 Upcoming Features
+
+- JWT Generation
+- JWT Validation
+- Protected APIs
+- Role Based Access Control
+- Unit Testing
+- Docker
+- Deployment
+
+---
+
+# 👨‍💻 Author
 
 Dheeraj Bhambhu
 
-Java Backend Development Journey
-
-Building backend systems with Spring Boot, JPA, MySQL, and Clean Architecture.
+Java Backend Development Journey 🚀
