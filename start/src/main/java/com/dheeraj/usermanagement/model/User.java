@@ -9,10 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 import jakarta.persistence.OneToMany;
-@Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity @Data @AllArgsConstructor @NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

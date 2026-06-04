@@ -15,6 +15,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public RegisterResponseDto register(RegisterRequestDto requestDto) {
 
@@ -37,34 +38,27 @@ public class AuthService {
         );
     }
     public LoginResponseDto login(LoginRequestDto requestDto) {
-
         User user = userRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() ->
                         new RuntimeException("Invalid Email or Password"));
-
         boolean matches =
                 passwordEncoder.matches(
                         requestDto.getPassword(),
-                        user.getPassword()
-                );
+                        user.getPassword());
         System.out.println("Entered Password = " + requestDto.getPassword());
         System.out.println("Database Password = " + user.getPassword());
-
         boolean matches1= passwordEncoder.matches(
                 requestDto.getPassword(),
-                user.getPassword()
-        );
-
+                user.getPassword());
         System.out.println("Matches = " + matches);
-
         if (!matches) {
-            throw new RuntimeException("Invalid Email or Password");
-        }
-
+            throw new RuntimeException("Invalid Email or Password");}
+        String token = jwtService.generateToken(user.getEmail());
         return new LoginResponseDto(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                token
         );
     }
 }

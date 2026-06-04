@@ -19,17 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "User management API",
 description = "APIs for managing user")
 @RestController
-
-
-
 public class UserController {
-
     private final UserService userService;
-
     public UserController(UserService userService) {
-
-        this.userService = userService;
-    }
+        this.userService = userService;}
 
     // CREATE USER
     @Operation(summary = "create a new user")
@@ -48,8 +41,6 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
-
-
     // GET ALL USERS
     @Operation(summary = "Get all User")
     @GetMapping("/users")
@@ -63,7 +54,6 @@ public class UserController {
         );
         return ResponseEntity.ok(response);
     }
-
     @Operation(summary = "Get User by ID")
     @GetMapping("users/{id}")
 public ResponseEntity<ApiResponse<UserResponseDto>> getUserById(
@@ -128,24 +118,18 @@ public ResponseEntity<ApiResponse<UserResponseDto>> getUserById(
     @Operation(summary = "Get users with pagination")
     @GetMapping("/users/paginated")
     public ResponseEntity<ApiResponse<Page<UserResponseDto>>> getUsersPaginated(
-
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
-
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
-
         Pageable pageable = PageRequest.of(
                 page,
                 size,
-                sort
-        );
-
+                sort);
         Page<UserResponseDto> users = userService.getUsers(pageable);
-
         ApiResponse<Page<UserResponseDto>> response =
                 new ApiResponse<>(
                         true,
@@ -193,24 +177,20 @@ public ResponseEntity<ApiResponse<UserResponseDto>> getUserById(
         String result = userService.deleteUser(id);
 
         if(result.equals("User not found")) {
-
             ApiResponse<String> response = new ApiResponse<>(
                     false,
                     result,
                     null
             );
-
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(response);
         }
-
         ApiResponse<String> response = new ApiResponse<>(
                 true,
                 result,
                 null
         );
-
         return ResponseEntity.ok(response);
     }
 }

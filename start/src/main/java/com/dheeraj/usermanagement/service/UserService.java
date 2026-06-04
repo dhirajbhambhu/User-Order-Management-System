@@ -36,7 +36,6 @@ public class UserService {
         User savedUser =  userRepository.save(user);
         return mapToResponseDto(savedUser);
     }
-
     // GET ALL USERS
     public List<UserResponseDto> getUsers() {
 
@@ -76,7 +75,6 @@ public class UserService {
                 .map(this::mapToResponseDto)
                 .collect(Collectors.toList());
     }
-
     // UPDATE USER
     public String updateUser(int id, UserRequestDto updateUser) {
         Optional<User> optionalUser = userRepository.findById(id);
