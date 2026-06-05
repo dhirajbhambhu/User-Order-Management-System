@@ -19,6 +19,7 @@ public class User {
     private String city;
     private String email;
     private String password;
+    private String role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     @OneToMany(mappedBy = "user")
