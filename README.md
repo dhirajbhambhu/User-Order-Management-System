@@ -1,33 +1,59 @@
 # User Management System API
 
-A Spring Boot REST API project built to learn and practice Java Backend Development, Spring Boot, Spring Data JPA, Spring Security, MySQL, REST APIs, and Clean Architecture concepts.
+A production-ready Spring Boot REST API for User and Order Management featuring JWT Authentication, Role-Based Access Control (RBAC), Spring Security, MySQL, Swagger Documentation, and Railway Deployment.
+
+---
+
+## 🚀 Live Demo
+
+### Swagger UI
+
+https://springboot-user-management-production-0066.up.railway.app/swagger-ui/index.html
+
+### API Base URL
+
+https://springboot-user-management-production-0066.up.railway.app
 
 ---
 
 ## 🚀 Tech Stack
 
-- Java 21
-- Spring Boot
-- Spring Data JPA (Hibernate)
-- Spring Security
-- MySQL
-- Maven
-- Lombok
-- Swagger / OpenAPI
+* Java 21
+* Spring Boot
+* Spring Data JPA (Hibernate)
+* Spring Security
+* JWT Authentication
+* MySQL
+* Maven
+* Lombok
+* Swagger / OpenAPI
+* Railway Deployment
 
 ---
 
 ## 📌 Project Overview
 
-This project provides REST APIs for managing users, orders, and authentication.
+This project provides REST APIs for managing users, orders, authentication, and authorization.
+
+Key features include:
+
+* JWT Authentication
+* Role-Based Access Control (ADMIN / USER)
+* BCrypt Password Encryption
+* User Management
+* Order Management
+* Pagination
+* Sorting
+* Custom JPA Queries
+* Swagger Documentation
+* Global Exception Handling
+* Railway Deployment
 
 The application follows a layered architecture:
 
 ```text
 Controller → Service → Repository → Database
 ```
-
-The goal of this project is to gain hands-on experience with backend development concepts commonly used in real-world applications.
 
 ---
 
@@ -44,7 +70,83 @@ src/main/java/com/dheeraj/usermanagement
 ├── response
 ├── exception
 ├── config
-└── security
+```
+
+---
+
+# 🔐 Authentication APIs
+
+## Register User
+
+```http
+POST /auth/register
+```
+
+### Sample Request
+
+```json
+{
+  "name": "Virat",
+  "age": 35,
+  "city": "Delhi",
+  "email": "virat@gmail.com",
+  "password": "password123"
+}
+```
+
+---
+
+## Login User
+
+```http
+POST /auth/login
+```
+
+### Sample Request
+
+```json
+{
+  "email": "virat@gmail.com",
+  "password": "password123"
+}
+```
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "message": "Login Successful",
+  "data": {
+    "token": "JWT_TOKEN"
+  }
+}
+```
+
+---
+
+# 🔒 Security Features
+
+* JWT Authentication
+* BCrypt Password Hashing
+* Stateless Authentication
+* Role-Based Access Control
+* Protected APIs
+* Authorization using Bearer Token
+
+### Roles
+
+```text
+ADMIN
+USER
+```
+
+### Access Rules
+
+```text
+ADMIN → Create, Update, Delete Users
+
+USER → Read Operations Only
 ```
 
 ---
@@ -57,11 +159,19 @@ src/main/java/com/dheeraj/usermanagement
 POST /users
 ```
 
+🔒 ADMIN Only
+
+---
+
 ## Get All Users
 
 ```http
 GET /users
 ```
+
+🔒 Authenticated Users
+
+---
 
 ## Get User By ID
 
@@ -69,11 +179,19 @@ GET /users
 GET /users/{id}
 ```
 
+🔒 Authenticated Users
+
+---
+
 ## Update User
 
 ```http
 PUT /users/{id}
 ```
+
+🔒 ADMIN Only
+
+---
 
 ## Delete User
 
@@ -81,17 +199,27 @@ PUT /users/{id}
 DELETE /users/{id}
 ```
 
+🔒 ADMIN Only
+
+---
+
 ## Search User By Name
 
 ```http
 GET /users/name/{name}
 ```
 
+🔒 Authenticated Users
+
+---
+
 ## Search User By Age
 
 ```http
 GET /users/age/{age}
 ```
+
+🔒 Authenticated Users
 
 ---
 
@@ -112,8 +240,6 @@ GET /users/paginated?page=1&size=10
 ---
 
 # 🔃 Sorting
-
-Sort users dynamically.
 
 Ascending:
 
@@ -137,7 +263,7 @@ GET /users/paginated?page=0&size=5&sortBy=age&direction=desc
 POST /users/{userId}/orders
 ```
 
-Sample Request:
+### Sample Request
 
 ```json
 {
@@ -186,15 +312,15 @@ DELETE /orders/{orderId}
 GET /orders/search?productName=laptop
 ```
 
-Supports partial matching and ignores upper/lower case.
-
-Examples:
+Supports:
 
 ```text
 lap
 Laptop
 LAPTOP
 ```
+
+Case-insensitive partial matching.
 
 ---
 
@@ -216,84 +342,17 @@ Returns all orders having price greater than the given value.
 
 ---
 
-# 🔐 Authentication APIs
-
-## Register User
-
-```http
-POST /auth/register
-```
-
-Sample Request:
-
-```json
-{
-  "name": "Virat",
-  "age": 35,
-  "city": "Delhi",
-  "email": "virat@gmail.com",
-  "password": "password123"
-}
-```
-
----
-
-## Login User
-
-```http
-POST /auth/login
-```
-
-Sample Request:
-
-```json
-{
-  "email": "virat@gmail.com",
-  "password": "password123"
-}
-```
-
-Sample Response:
-
-```json
-{
-  "success": true,
-  "message": "Login Successful",
-  "data": {
-    "id": 1,
-    "name": "Virat",
-    "email": "virat@gmail.com"
-  }
-}
-```
-
----
-
-# 🔒 Password Security
-
-Passwords are encrypted using BCrypt before storing in the database.
-
-Example:
-
-```text
-$2a$10$tkNSQFc6eHFd/Lu/0A6vmOMqNdObubuoafaTYdPDP2XBI3JnYQlJq
-```
-
-Passwords are never stored in plain text.
-
----
-
 # 🔗 Entity Relationship
 
 ```text
 User (1)
     |
-    |------> Order 1
-    |------> Order 2
-    |------> Order 3
+    ├── Order 1
+    ├── Order 2
+    └── Order 3
 ```
 
-JPA Mapping:
+### JPA Mapping
 
 ```java
 @OneToMany
@@ -301,29 +360,29 @@ JPA Mapping:
 @JoinColumn
 ```
 
-Database Relationship:
+### Database Relationship
 
 ```text
 users
-  |
-  | id
-  |
+   |
+   | id
+   |
 orders
-  |
-  | user_id
+   |
+   | user_id
 ```
 
 ---
 
 # ⚠️ Exception Handling
 
-Custom Exceptions:
+### Custom Exceptions
 
 ```java
 UserNotFoundException
 ```
 
-Global Handler:
+### Global Exception Handler
 
 ```java
 @RestControllerAdvice
@@ -345,63 +404,103 @@ Provides consistent error responses throughout the application.
 
 ---
 
-# 🗄 Database
+# 🗄 Database Schema
 
 ## users
 
-| Column |
-|----------|
-| id |
-| name |
-| age |
-| city |
-| email |
-| password |
+| Column     |
+| ---------- |
+| id         |
+| name       |
+| age        |
+| city       |
+| email      |
+| password   |
+| role       |
 | created_at |
 | updated_at |
 
+---
+
 ## orders
 
-| Column |
-|----------|
-| id |
+| Column       |
+| ------------ |
+| id           |
 | product_name |
-| price |
-| user_id |
+| price        |
+| user_id      |
+
+---
+
+# 🔑 JWT Authentication Flow
+
+```text
+1. Register User
+
+2. Login User
+
+3. Receive JWT Token
+
+4. Click Authorize in Swagger
+
+5. Enter:
+Bearer <token>
+
+6. Access Protected APIs
+```
 
 ---
 
 # 📖 Swagger Documentation
 
+### Local
+
 ```text
 http://localhost:8080/swagger-ui/index.html
 ```
 
-Use Swagger to test APIs directly from the browser.
+### Production
+
+```text
+https://springboot-user-management-production-0066.up.railway.app/swagger-ui/index.html
+```
 
 ---
 
-# 💻 Run Project
+# 💻 Run Project Locally
 
-Clone Repository:
+### Clone Repository
 
 ```bash
 git clone https://github.com/dheeraj-bhambhu/springboot-user-management.git
 ```
 
-Move Into Project:
+### Move Into Project
 
 ```bash
 cd springboot-user-management
 ```
 
-Run Application:
+### Configure Database
+
+Update:
+
+```properties
+application.properties
+```
+
+with your MySQL credentials.
+
+---
+
+### Run Application
 
 ```bash
 mvn spring-boot:run
 ```
 
-Or:
+or
 
 ```bash
 ./mvnw spring-boot:run
@@ -411,42 +510,50 @@ Or:
 
 # 🎯 Concepts Learned
 
-- REST APIs
-- Spring Boot
-- Dependency Injection
-- Layered Architecture
-- DTO Pattern
-- Entity Mapping
-- JPA/Hibernate
-- MySQL Integration
-- Pagination
-- Sorting
-- One-To-Many Mapping
-- Many-To-One Mapping
-- Foreign Keys
-- Custom Queries (@Query)
-- Spring Security
-- Authentication
-- BCrypt Password Encryption
-- Password Hashing
-- Swagger Documentation
+* Java Backend Development
+* REST APIs
+* Spring Boot
+* Spring Security
+* JWT Authentication
+* Role-Based Access Control
+* Dependency Injection
+* DTO Pattern
+* Layered Architecture
+* JPA/Hibernate
+* MySQL Integration
+* Entity Relationships
+* Pagination
+* Sorting
+* Custom Queries
+* BCrypt Password Hashing
+* Global Exception Handling
+* Swagger Documentation
+* Railway Deployment
 
 ---
 
-# 🚧 Upcoming Features
+# 🚀 Future Improvements
 
-- JWT Generation
-- JWT Validation
-- Protected APIs
-- Role Based Access Control
-- Unit Testing
-- Docker
-- Deployment
+* Refresh Tokens
+* Docker Containerization
+* Unit Testing (JUnit + Mockito)
+* Integration Testing
+* API Rate Limiting
+* Redis Caching
+* CI/CD Pipeline (GitHub Actions)
 
 ---
 
 # 👨‍💻 Author
 
-Dheeraj Bhambhu
+**Dheeraj Bhambhu**
 
-Java Backend Development Journey 🚀
+Java Backend Developer
+
+GitHub:
+https://github.com/dheeraj-bhambhu
+
+LinkedIn:
+https://www.linkedin.com/in/dhiraj-bhambhu/
+
+🚀 Building real-world Java Backend projects and preparing for Software Engineering roles.
