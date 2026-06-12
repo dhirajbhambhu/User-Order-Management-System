@@ -1,6 +1,21 @@
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/SpringBoot-3.x-green)
+![JWT](https://img.shields.io/badge/JWT-Authentication-blue)
+![Railway](https://img.shields.io/badge/Deployed-Railway-purple)
+
 # User Management System API
 
 A production-ready Spring Boot REST API for User and Order Management featuring JWT Authentication, Role-Based Access Control (RBAC), Spring Security, MySQL, Swagger Documentation, and Railway Deployment.
+
+---
+
+## Highlights
+
+- Developed and deployed a secure REST API using Spring Boot and Spring Security.
+- Implemented JWT Authentication and Role-Based Access Control (ADMIN/USER).
+- Designed One-to-Many User-Order relationships using JPA/Hibernate.
+- Deployed production application on Railway.
+- Documented APIs using Swagger/OpenAPI.
 
 ---
 
@@ -52,7 +67,19 @@ Key features include:
 The application follows a layered architecture:
 
 ```text
-Controller → Service → Repository → Database
+Client
+  |
+  v
+Controller
+  |
+  v
+Service
+  |
+  v
+Repository
+  |
+  v
+MySQL
 ```
 
 ---
@@ -534,13 +561,8 @@ or
 
 # 🚀 Future Improvements
 
-* Refresh Tokens
 * Docker Containerization
 * Unit Testing (JUnit + Mockito)
-* Integration Testing
-* API Rate Limiting
-* Redis Caching
-* CI/CD Pipeline (GitHub Actions)
 
 ---
 
